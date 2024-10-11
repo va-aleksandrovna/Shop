@@ -1,0 +1,209 @@
+﻿@model ProductModel
+@{
+    ViewData["Title"] = "Панель админа";
+}
+
+<div class="row">
+    <div class="col-md-3 my-4">
+        <div class="list-group ">
+            <a asp-action="GetProducts" class="list-group-item list-group-item-action">Товары</a>
+            <a asp-action="GetUsers" class="list-group-item list-group-item-action">Пользователи</a>
+        </div>
+    </div>
+    <div class="col-md-9 my-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Редактирование данных товара @Model.Brend @Model.Model</h4>
+                        <hr />
+                        <div class="col-8">
+                            <div>Категория: @Model.Category</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-controller="Admin" asp-action="EditProduct" asp-route-id="@Model.Id" asp-route-Category="@Model.Category" method="post">
+
+                            <div class="text-danger offset-4 col-8"></div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Производитель</label>
+                                <select class="sel2_filter" name="Brend" required>
+                                    <!option value="Rokinon" @(Model.Brend == "Rokinon" ? "selected" : "")>Rokinon</!option>
+                                    <!option value="Sony" @(Model.Brend == "Sony" ? "selected" : "")>Sony</!option>
+                                    <!option value="Meike" @(Model.Brend == "Meike" ? "selected" : "")>Meike</!option>
+                                    <!option value="Viltrox" @(Model.Brend == "Viltrox" ? "selected" : "")>Viltrox</!option>
+                                    <!option value="SJCAM" @(Model.Brend == "SJCAM" ? "selected" : "")>SJCAM</!option>
+                                    <!option value="GoPro" @(Model.Brend == "GoPro" ? "selected" : "")>GoPro</!option>
+                                    <!option value="Digma" @(Model.Brend == "Digma" ? "selected" : "")>Digma</!option>
+                                    <!option value="Canon" @(Model.Brend == "Canon" ? "selected" : "")>Canon</!option>
+                                    <!option value="Nikon" @(Model.Brend == "Nikon" ? "selected" : "")>Nikon</!option>
+                                </select>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Модель</label>
+                                <div class="col-8">
+                                    <input placeholder="Модель" name="Model" class="form-control here" type="text" value="@Model.Model" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Цена, руб</label>
+                                <div class="col-8">
+                                    <input placeholder="Цена" name="Price" class="form-control here" type="number" min="1" value="@Model.Price" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Описание</label>
+                                <div class="col-8">
+                                    <input placeholder="Описание" name="Description" class="form-control here" type="text" value="@Model.Description" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Изображение</label>
+                                <div class="col-8">
+                                    <input placeholder="Изображение" name="Image" class="form-control here" type="text" value="@Model.Image" required>
+                                </div>
+                            </div>
+                            @if (@Model.Category == "Фотоаппарат")
+                            {
+                                <div class="form-group row" style="margin-top: 15px;">
+                                    <label class="col-4 col-form-label">Кроп-фактор</label>
+                                    <select class="sel2_filter" name="CropFactor">
+                                        <!option value="">не указано</!option>
+                                        <!option value="1,5" @(Model.CropFactor == 1.5 ? "selected" : "")>1.5</!option>
+                                        <!option value="1,6" @(Model.CropFactor == 1.6 ? "selected" : "")>1.6</!option>
+                                        <!option value="5,62" @(Model.CropFactor == 5.62 ? "selected" : "")>5.62</!option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-4 col-form-label">Полнокадровый</label>
+                                    <select class="sel2_filter" name="FullFrame">
+                                        <!option value="">не указано</!option>
+                                        <!option value="да" @(Model.FullFrame == "да" ? "selected" : "")>да</!option>
+                                        <!option value="нет" @(Model.FullFrame == "нет" ? "selected" : "")>нет</!option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-4 col-form-label">Объектив в комплекте</label>
+                                    <select class="sel2_filter" name="Lens">
+                                        <!option value="">не указано</!option>
+                                        <!option value="да" @(Model.Lens == "да" ? "selected" : "")>да</!option>
+                                        <!option value="нет" @(Model.Lens == "нет" ? "selected" : "")>нет</!option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-4 col-form-label">Байонет</label>
+                                    <select class="sel2_filter" name="Bayonet">
+                                        <!option value="Canon EF-M" @(Model.Bayonet == "Canon EF-M" ? "selected" : "")>Canon EF-M</!option>
+                                        <!option value="Canon RF-S" @(Model.Bayonet == "Canon RF-S" ? "selected" : "")>Canon RF-S</!option>
+                                        <!option value="Canon RF" @(Model.Bayonet == "Canon RF" ? "selected" : "")>Canon RF</!option>
+                                        <!option value="Nikon F" @(Model.Bayonet == "Nikon F" ? "selected" : "")>Nikon F</!option>
+                                        <!option value="Sony E" @(Model.Bayonet == "Sony E" ? "selected" : "")>Sony E</!option>
+                                        <!option value="Fuji X Mount" @(Model.Bayonet == "Fuji X Mount" ? "selected" : "")>Fuji X Mount</!option>
+                                        <!option value="Canon EF" @(Model.Bayonet == "Canon EF" ? "selected" : "")>Canon EF</!option>
+                                        <!option value="Fujifilm X Mount" @(Model.Bayonet == "Fujifilm X Mount" ? "selected" : "")>Fujifilm X Mount</!option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-4 col-form-label">Общее число Мп матрицы</label>
+                                    <div class="col-8">
+                                        @* <input name="NumberOfMegapixels" class="form-control here" type="number" min="1" step="0.1"> *@
+                                        <input class="sel2_filter" name="NumberOfMegapixels" type="text" id="sno"
+                                               onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||
+event.charCode == 44 || event.charCode == 0 " style="margin-left: 0px;" value="@Model.NumberOfMegapixels">
+                                    </div>
+                                </div>
+                            }
+
+                            @if (@Model.Category == "Объектив")
+                            {
+                                <div class="form-group row" style="margin-top: 15px;">
+                                    <label class="col-4 col-form-label">Тип фок. расстояния</label>
+                                    <select class="sel2_filter" name="TypeOfFocalLength">
+                                        <!option value="">не указано</!option>
+                                        <!option value="переменное" @(Model.TypeOfFocalLength == "переменное" ? "selected" : "")>переменное</!option>
+                                        <!option value="фиксированное" @(Model.TypeOfFocalLength == "фиксированное" ? "selected" : "")>фиксированное</!option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-4 col-form-label">Максимальное фокусное расстояние</label>
+                                    <input class="sel2_filter" type="number" min="3" max="601" name="FocalLength" value="@Model.FocalLength">
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-4 col-form-label">Байонет</label>
+                                    <select class="sel2_filter" name="Bayonet">
+                                        <!option value="Canon EF-M" @(Model.Bayonet == "Canon EF-M" ? "selected" : "")>Canon EF-M</!option>
+                                        <!option value="Canon RF-S" @(Model.Bayonet == "Canon RF-S" ? "selected" : "")>Canon RF-S</!option>
+                                        <!option value="Canon RF" @(Model.Bayonet == "Canon RF" ? "selected" : "")>Canon RF</!option>
+                                        <!option value="Nikon F" @(Model.Bayonet == "Nikon F" ? "selected" : "")>Nikon F</!option>
+                                        <!option value="Sony E" @(Model.Bayonet == "Sony E" ? "selected" : "")>Sony E</!option>
+                                        <!option value="Fuji X Mount" @(Model.Bayonet == "Fuji X Mount" ? "selected" : "")>Fuji X Mount</!option>
+                                        <!option value="Canon EF" @(Model.Bayonet == "Canon EF" ? "selected" : "")>Canon EF</!option>
+                                        <!option value="Fujifilm X Mount" @(Model.Bayonet == "Fujifilm X Mount" ? "selected" : "")>Fujifilm X Mount</!option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-4 col-form-label">Угол обзора</label>
+                                    <input class="sel2_filter" type="number" min="0" max="181" name="ViewingAngle" value="@Model.ViewingAngle">
+                                </div>
+                            }
+
+                            @if (@Model.Category == "Экшн-камера")
+                            {
+                                <div class="form-group row" style="margin-top: 15px;">
+                                    <label class="col-4 col-form-label">Кол-во кадров</label>
+                                    <select class="sel2_filter" name="MaxNumberOfFrames">
+                                        <!option value="">не указано</!option>
+                                        <!option value="30" @(Model.MaxNumberOfFrames == 30 ? "selected" : "")>30</!option>
+                                        <!option value="60" @(Model.MaxNumberOfFrames == 60 ? "selected" : "")>60</!option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-4 col-form-label">Диагональ дисплея</label>
+                                    <input class="sel2_filter" type="number" min="0" max="10" name="DiagonalDisplay" value="@Model.DiagonalDisplay">
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-4 col-form-label">Общее число Мп матрицы</label>
+                                    <input class="sel2_filter" name="NumberOfMegapixels" type="text" id="sno"
+                                           onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||
+event.charCode == 44 || event.charCode == 0 " value="@Model.NumberOfMegapixels">
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-4 col-form-label">Водонепроницаемость</label>
+                                    <select class="sel2_filter" name="WaterResistance">
+                                        <!option value="">не указано</!option>
+                                        <!option value="есть" @(Model.WaterResistance == "есть" ? "selected" : "")>есть</!option>
+                                        <!option value="нет" @(Model.WaterResistance == "нет" ? "selected" : "")>нет</!option>
+                                    </select>
+                                </div>
+                            }
+
+                            <div class="form-group row">
+                                <div class="offset-4 col-8 text-right">
+                                    <button class="btn btn-info">Сохранить</button>
+                                </div>
+                            </div>
+                        </form>
+                        <a class="text-info" asp-action="GetProducts"><i class="bi bi-arrow-left mr-2 text-info"></i>Назад</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

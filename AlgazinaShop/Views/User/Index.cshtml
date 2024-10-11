@@ -1,0 +1,46 @@
+﻿@model UserModel
+
+@{
+	ViewData["Title"] = "Авторизация";
+}
+
+@* 
+<h3>@Model.Id</h3>
+<h3>@Model.Name</h3>
+<h3>@Model.Login</h3>
+<h3>@Model.Password</h3> *@
+
+<div class="flex-container-user">
+	<div class="main-user">
+		<input type="checkbox" id="chk" aria-hidden="true">
+
+		<div class="login-user">
+			<form asp-controller="User" asp-action="Index" method="post" class="form-user">
+				@if (!string.IsNullOrWhiteSpace(Model.Error))
+				{
+					<label class="label-user login" for="chk" aria-hidden="true">
+						<h6 style="color: red;">@Model.Error</h6>
+                        <div>Вход</div>
+					</label>
+				}
+				else
+				{
+					<label class="label-user" for="chk" aria-hidden="true">Вход</label>
+				}
+				<input class="input-user" type="email" name="Login" placeholder="Email" required="">
+				<input class="input-user" type="password" name="Password" placeholder="Password" required="">
+				<button>Войти</button>
+			</form>
+		</div>
+
+		<div class="register-user">
+			<form asp-controller="User" asp-action="Registration" method="post" class="form-user">
+				<label class="label-user-p" for="chk" aria-hidden="true">Регистрация</label>
+				<input class="input-user" type="text" name="Name" placeholder="Name" required="">
+				<input class="input-user" type="email" name="Login" placeholder="Email" required="">
+				<input class="input-user" type="password" name="Password" placeholder="Password" required="">
+				<button class="button-r">Зарегистрироваться</button>
+			</form>
+		</div>
+	</div>
+</div>

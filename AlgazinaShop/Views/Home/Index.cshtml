@@ -1,0 +1,274 @@
+﻿@model List<ProductModel>
+@{
+    ViewData["Title"] = "Главная";
+}
+
+<div class="cart-tab-content2">
+    <div class="flex-container2">
+        <form asp-controller="Home" asp-action="Index" method="get">
+            <input type="text" name="search" class="find-input" placeholder="Поиск по сайту" value="@ViewBag.Search"/>
+
+            <select class="sel_filter" name="sort">
+                <!option value="">Сортировать по: не выбрано</!option>
+                <!option value="price" @(ViewBag.Sort == "price" ? "selected" : "")>Цена (по возрастанию)</!option>
+                <!option value="pricedesc" @(ViewBag.Sort == "pricedesc" ? "selected" : "")>Цена (по убыванию)</!option>
+                <!option value="name" @(ViewBag.Sort == "name" ? "selected" : "")>Название товаров (по алфавиту)</!option>
+                <!option value="namedesc" @(ViewBag.Sort == "namedesc" ? "selected" : "")>Название товаров (по алфавиту в обратном порядке)</!option>
+            </select>
+
+            <button type="button" class="filter" id="btn-fil" onclick="Modal()">
+                <svg viewBox="0 0 512 512" height="1em">
+                    <path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"></path>
+                </svg>
+            </button>
+
+            <!-- Модальное окно -->
+            <div id="myModal" class="modal">
+                <div type="button" class="modal-content">
+                    <button type="button" class="btn-close"></button>
+
+                    <div class="flex-container3">
+                        <div>
+                            <div class="div_filter">Категория:</div>
+                            <select class="sel2_filter" name="category" onchange="this.form.submit()">
+                                <!option value="">Все</!option>
+                                <!option value="photo" @(ViewBag.Category == "photo" ? "selected" : "")>Фотоаппараты</!option>
+                                <!option value="obectiv" @(ViewBag.Category == "obectiv" ? "selected" : "")>Объективы</!option>
+                                <!option value="action" @(ViewBag.Category == "action" ? "selected" : "")>Экшн-камеры</!option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="div_filter">Производитель:</div>
+                            <select class="sel2_filter" name="brend">
+                                <!option value="">Все</!option>
+                                @* @foreach (var item in ViewBag.ListBrend)
+                                    {
+                                    <!option value="@item" @(ViewBag.Brend == item ? "selected" : "")>@item</!option>
+                                    } *@
+
+                                <!option value="Rokinon" @(ViewBag.Brend == "Rokinon" ? "selected" : "")>Rokinon</!option>
+                                <!option value="Sony" @(ViewBag.Brend == "Sony" ? "selected" : "")>Sony</!option>
+                                <!option value="Meike" @(ViewBag.Brend == "Meike" ? "selected" : "")>Meike</!option>
+                                <!option value="Viltrox" @(ViewBag.Brend == "Viltrox" ? "selected" : "")>Viltrox</!option>
+                                <!option value="SJCAM" @(ViewBag.Brend == "SJCAM" ? "selected" : "")>SJCAM</!option>
+                                <!option value="GoPro" @(ViewBag.Brend == "GoPro" ? "selected" : "")>GoPro</!option>
+                                <!option value="Digma" @(ViewBag.Brend == "Digma" ? "selected" : "")>Digma</!option>
+                                <!option value="Canon" @(ViewBag.Brend == "Canon" ? "selected" : "")>Canon</!option>
+                                <!option value="Nikon" @(ViewBag.Brend == "Nikon" ? "selected" : "")>Nikon</!option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="div_filter">Мин. цена:</div>
+                            <input class="sel2_filter" type="number" id="minPrice" min="100" max="2999999" placeholder="От 100" name="minprice" value="@ViewBag.Minprice">
+                        </div>
+
+                        <div>
+                            <div class="div_filter">Макс. цена:</div>
+                            <input class="sel2_filter" type="number" id="maxPrice" min="100" max="2999999" placeholder="До 2 999 999" name="maxprice" value="@ViewBag.Maxprice">
+                        </div>
+
+                        @if (ViewBag.Category == "photo")
+                        {
+                            <div>
+                                <div class="div_filter">Кроп-фактор:</div>
+                                <select class="sel2_filter" name="cropfactor">
+                                    <!option value="0">Все</!option>
+                                    @* @foreach (var item in ViewBag.ListCropfactor)
+                                    {
+                                        <!option value="@item" @(ViewBag.Cropfactor == item ? "selected" : "")>@item</!option>
+                                    } *@
+                                    <!option value="1.5" @(ViewBag.Cropfactor == 1.5 ? "selected" : "")>1.5</!option>
+                                    <!option value="1.6" @(ViewBag.Cropfactor == 1.6 ? "selected" : "")>1.6</!option>
+                                    <!option value="5.62" @(ViewBag.Cropfactor == 5.62 ? "selected" : "")>5.62</!option>
+                                </select>
+                            </div>
+
+                            <div class="line">
+                                <div class="div_filter">Полнокадровый:</div>
+                                <select class="sel2_filter" name="fullframe">
+                                    <!option value="">Все</!option>
+                                    <!option value="да" @(ViewBag.Fullframe == "да" ? "selected" : "")>да</!option>
+                                    <!option value="нет" @(ViewBag.Fullframe == "нет" ? "selected" : "")>нет</!option>
+                                </select>
+                            </div>
+
+                            <div class="line">
+                                <div class="div_filter">Объектив в комплекте:</div>
+                                <select class="sel2_filter" name="lens">
+                                    <!option value="">Все</!option>
+                                    <!option value="да" @(ViewBag.Lens == "да" ? "selected" : "")>да</!option>
+                                    <!option value="нет" @(ViewBag.Lens == "нет" ? "selected" : "")>нет</!option>
+                                </select>
+                            </div>
+
+                            <div class="line">
+                                <div class="div_filter">Байонет:</div>
+                                <select class="sel2_filter" name="bayonet">
+                                    <!option value="">Все</!option>
+                                    @* @foreach (var item in ViewBag.ListBayonet)
+                                    {
+                                        <!option value="@item" @(ViewBag.Bayonet == item ? "selected" : "")>@item</!option>
+                                    } *@
+
+                                    <!option value="Canon EF-M" @(ViewBag.Bayonet == "Canon EF-M" ? "selected" : "")>Canon EF-M</!option>
+                                    <!option value="Canon RF-S" @(ViewBag.Bayonet == "Canon RF-S" ? "selected" : "")>Canon RF-S</!option>
+                                    <!option value="Canon RF" @(ViewBag.Bayonet == "Canon RF" ? "selected" : "")>Canon RF</!option>
+                                    <!option value="Nikon F" @(ViewBag.Bayonet == "Nikon F" ? "selected" : "")>Nikon F</!option>
+                                    <!option value="Sony E" @(ViewBag.Bayonet == "Sony E" ? "selected" : "")>Sony E</!option>
+                                    <!option value="Fuji X Mount" @(ViewBag.Bayonet == "Fuji X Mount" ? "selected" : "")>Fuji X Mount</!option>
+                                    <!option value="Canon EF" @(ViewBag.Bayonet == "Canon EF" ? "selected" : "")>Canon EF</!option>
+                                    <!option value="Fujifilm X Mount" @(ViewBag.Bayonet == "Fujifilm X Mount" ? "selected" : "")>Fujifilm X Mount</!option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <div class="div_filter">Общее число Мп матрицы:</div>
+                                <input class="sel2_filter" type="number" id="minPrice" min="11" max="62" placeholder="От 11" name="minmp" value="@ViewBag.Minmp">
+                                <input class="sel2_filter" type="number" id="maxPrice" min="11" max="62" placeholder="До 62" name="maxmp" value="@ViewBag.Maxmp">
+                            </div>
+                        }
+
+                        @if (ViewBag.Category == "obectiv")
+                        {
+                            <div>
+                                <div class="div_filter">Тип фок. расстояния:</div>
+                                <select class="sel2_filter" name="type">
+                                    <!option value="">Все</!option>
+                                    <!option value="переменное" @(ViewBag.TypeOfFocalLength == "переменное" ? "selected" : "")>переменное</!option>
+                                    <!option value="фиксированное" @(ViewBag.TypeOfFocalLength == "фиксированное" ? "selected" : "")>фиксированное</!option>
+                                </select>
+                            </div>
+
+                            <div class="line">
+                                <div class="div_filter">Максимальное фокусное расстояние:</div>
+                                <input class="sel2_filter" type="number" id="minPrice" min="3" max="601" placeholder="От 3" name="minfocus" value="@ViewBag.Minfocus">
+                                <input class="sel2_filter" type="number" id="maxPrice" min="3" max="601" placeholder="До 601" name="maxfocus" value="@ViewBag.Maxfocus">
+                            </div>
+
+                            <div  class="line">
+                                <div class="div_filter">Байонет:</div>
+                                <select class="sel2_filter" name="bayonet">
+                                    <!option value="">Все</!option>
+                                    @* @foreach (var item in ViewBag.ListBayonet)
+                                {
+                                <!option value="@item" @(ViewBag.Bayonet == item ? "selected" : "")>@item</!option>
+                                } *@
+
+                                    <!option value="Canon EF-M" @(ViewBag.Bayonet == "Canon EF-M" ? "selected" : "")>Canon EF-M</!option>
+                                    <!option value="Canon RF-S" @(ViewBag.Bayonet == "Canon RF-S" ? "selected" : "")>Canon RF-S</!option>
+                                    <!option value="Canon RF" @(ViewBag.Bayonet == "Canon RF" ? "selected" : "")>Canon RF</!option>
+                                    <!option value="Nikon F" @(ViewBag.Bayonet == "Nikon F" ? "selected" : "")>Nikon F</!option>
+                                    <!option value="Sony E" @(ViewBag.Bayonet == "Sony E" ? "selected" : "")>Sony E</!option>
+                                    <!option value="Fuji X Mount" @(ViewBag.Bayonet == "Fuji X Mount" ? "selected" : "")>Fuji X Mount</!option>
+                                    <!option value="Canon EF" @(ViewBag.Bayonet == "Canon EF" ? "selected" : "")>Canon EF</!option>
+                                    <!option value="Fujifilm X Mount" @(ViewBag.Bayonet == "Fujifilm X Mount" ? "selected" : "")>Fujifilm X Mount</!option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <div class="div_filter">Угол обзора:</div>
+                                <input class="sel2_filter" type="number" id="minPrice" min="0" max="181" placeholder="От 0" name="minangle" value="@ViewBag.Minangle">
+                                <input class="sel2_filter" type="number" id="maxPrice" min="0" max="181" placeholder="До 181" name="maxangle" value="@ViewBag.Maxangle">
+                            </div>
+                        }
+
+                        @if (ViewBag.Category == "action")
+                        {
+                            <div>
+                                <div class="div_filter">Кол-во кадров:</div>
+                                <select class="sel2_filter" name="frame">
+                                    <!option value="0">Все</!option>
+                                    <!option value="30" @(ViewBag.Frame == 30 ? "selected" : "")>30</!option>
+                                    <!option value="60" @(ViewBag.Frame == 60 ? "selected" : "")>60</!option>
+                                </select>
+                            </div>
+
+                            <div class="line">
+                                <div class="div_filter">Диагональ дисплея:</div>
+                                <input class="sel2_filter" type="number" id="minPrice" min="0" max="10" placeholder="От 0" name="mindiagonal" value="@ViewBag.Mindiagonal">
+                                <input class="sel2_filter" type="number" id="maxPrice" min="0" max="10" placeholder="До 10" name="maxdiagonal" value="@ViewBag.Maxdiagonal">
+                            </div>
+
+                            <div>
+                                <div class="div_filter">Общее число Мп матрицы:</div>
+                                <input class="sel2_filter" type="number" id="minPrice" min="11" max="62" placeholder="От 11" name="minmp" value="@ViewBag.Minmp">
+                                <input class="sel2_filter" type="number" id="maxPrice" min="11" max="62" placeholder="До 62" name="maxmp" value="@ViewBag.Maxmp">
+                            </div>
+
+                            <div class="line">
+                                <div class="div_filter">Водонепроницаемость:</div>
+                                <select class="sel2_filter" name="water">
+                                    <!option value="">Все</!option>
+                                    <!option value="есть" @(ViewBag.Water == "есть" ? "selected" : "")>есть</!option>
+                                    <!option value="нет" @(ViewBag.Water == "нет" ? "selected" : "")>нет</!option>
+                                </select>
+                            </div>
+                        }
+
+                        <div style="margin-top: 24px; display: flex;">
+                            <input class="btn_filter" type="submit" value="Применить" />
+                            <a href="~/Home/Index" type="button" class="btn_filter2">Сбросить</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input class="btn_filter" type="submit" value="Применить"/>
+        </form>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="flex-container">
+            <label>Нет товаров, удовлетворяющих критериям поиска</label>
+        </div>
+    }
+    else
+    {
+        <div class="flex-container">
+            @foreach (ProductModel item in Model)
+            {
+                <div class="product-tile">
+                    <div class="product-image">
+                        <a href="/Home/Details?id=@item.Id">
+                            <img src="/images/@item.Image" class="img-fluid" />
+                        </a>
+                    </div>
+                    <div class="product-text">
+                        <div class="product-text-articul">Артикул: @item.Id</div>
+                        <div>
+                            <label class="product-text-specifications">Категория:</label>
+                            <label>@item.Category</label>
+                        </div>
+                        <div>
+                            <label class="product-text-specifications">Бренд:</label>
+                            <label>@item.Brend</label>
+                        </div>
+                        <div>
+                            <label class="product-text-specifications">Модель:</label>
+                            <label>@item.Model</label>
+                        </div>
+                        <div>
+                            <label class="product-text-specifications">Цена:</label>
+                            <label>@item.Price.ToString("N0") руб.</label>
+                        </div>
+                        <div>
+                            <label class="product-text-specifications">Описание:</label>
+                            <p>@item.Description</p>
+                        </div>
+                        @*<div>@Model.Image</div>*@
+                    </div>
+
+                    <form asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id" method="post" target="hidden_iframe" onsubmit="addToCart(event, '@item.Id'); return true;">
+                        <button id="@item.Id" type="submit" class="btn">Добавить в корзину</button>
+                    </form>
+                    <iframe id="hidden_iframe" name="hidden_iframe" style="display:none;"></iframe>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@*<div>@Model</div>*@

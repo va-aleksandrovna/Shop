@@ -1,0 +1,117 @@
+﻿@model ProductModel
+
+@{
+    ViewData["Title"] = "Товар";
+}
+
+@if (Model == null)
+{
+    <h1 class="product-card-top_title"> Упс, такого товара не существует</h1>
+}
+else
+{
+    <div class="product-card_head">Категория: @Model.Category</div>
+    <h1 class="product-card-top_title">@Model.Brend @Model.Model</h1>
+    <div class="product-tile-id">
+        <div class="product-image-id">
+            <img src="/images/@Model.Image" class="img-fluid" />
+
+        </div>
+        <div class="product-text-id">
+            <div class="product-text-articul-id">Артикул: @Model.Id</div>
+
+            <div>
+                <label class="product-text-specifications-id">Описание:</label>
+                <label>@Model.Description</label>
+            </div>
+
+            @if (Model.CropFactor != null)
+            {
+                <div>
+                    <label class="product-text-specifications-id2">Кроп-фактор:</label>
+                    <label>@Model.CropFactor</label>
+                </div>
+            }
+            @if (Model.FullFrame != null)
+            {
+                <div>
+                    <label class="product-text-specifications-id2">Полнокадровый:</label>
+                    <label>@Model.FullFrame</label>
+                </div>
+            }
+            @if (Model.Lens != null)
+            {
+                <div>
+                    <label class="product-text-specifications-id2">Наличие объектива:</label>
+                    <label>@Model.Lens</label>
+                </div>
+            }
+            @if (Model.FocalLength != null)
+            {
+                <div>
+                    <label class="product-text-specifications-id2">Фокусное расстояние:</label>
+                    <label>@Model.FocalLength мм</label>
+                </div>
+            }
+            @if (Model.TypeOfFocalLength != null)
+            {
+                <div>
+                    <label class="product-text-specifications-id2">Тип фокусного растояния:</label>
+                    <label>@Model.TypeOfFocalLength</label>
+                </div>
+            }
+            @if (Model.ViewingAngle != null)
+            {
+                <div>
+                    <label class="product-text-specifications-id2">Угол обзора:</label>
+                    <label>@Model.ViewingAngle°</label>
+                </div>
+            }
+            @if (Model.DiagonalDisplay != null)
+            {
+                <div>
+                    <label class="product-text-specifications-id2">Диагональ основного дисплея:</label>
+                    <label>@Model.DiagonalDisplay"</label>
+                </div>
+            }
+            @if (Model.MaxNumberOfFrames != null)
+            {
+                <div>
+                    <label class="product-text-specifications-id2">Максимальное число кадров:</label>
+                    <label>@Model.MaxNumberOfFrames кадр./сек</label>
+                </div>
+            }
+            @if (Model.WaterResistance != null)
+            {
+                <div>
+                    <label class="product-text-specifications-id2">Водонепроницаемость корпуса:</label>
+                    <label>@Model.WaterResistance</label>
+                </div>
+            }
+            @if (Model.NumberOfMegapixels != null)
+            {
+                <div>
+                    <label class="product-text-specifications-id2">Количество магапикселей:</label>
+                    <label>@Model.NumberOfMegapixels Мп</label>
+                </div>
+            }
+            @if (Model.Bayonet != null)
+            {
+                <div>
+                    <label class="product-text-specifications-id2">Байонет:</label>
+                    <label>@Model.Bayonet</label>
+                </div>
+            }
+        </div>
+        <div class="product-textprice-id">
+            <div>
+                <label>@Model.Price.ToString("N0")</label>
+                <label class="product-textprice-id_rub">₽</label>
+            </div>
+            <form asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id" method="post" target="hidden_iframe" onsubmit="addToCart(event, '@Model.Id'); return true;">
+                <button id="@Model.Id" type="submit" class="btn">Добавить в корзину</button>
+            </form>
+            <iframe id="hidden_iframe" name="hidden_iframe" style="display:none;"></iframe>
+        </div>
+    </div>
+}

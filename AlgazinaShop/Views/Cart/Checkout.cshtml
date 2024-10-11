@@ -1,0 +1,63 @@
+﻿@model Cart
+
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+<h1 class="product-card-top_title">Оформление заказа</h1>
+<div class="text-order">Пожалуйста, введите свои данные, и мы начнем собирать ваш заказ прямо сейчас!</div>
+
+<div class="cart-tab-content">
+    <div class="order-tab-total-amount">
+        <form method="POST" action="Checkout2" onsubmit="sessionStorage.clear(); return true;">
+            <div class="order-form">
+                <label class="order-label">Имя: </label>
+                <input class="order-input" type="text" name="name" required />
+            </div>
+            <div class="order-form">
+                <label class="order-label">Почта: </label>
+                <input class="order-input" type="email" placeholder="user@email.com" name="email" required />
+            </div>
+            <div class="order-form">
+                <label class="order-label">Телефон: </label>
+                <input class="order-input" type="tel" id="inputPhone" value="+7 (___) ___-__-__" name="phone" required />
+            </div>
+            <button class="btn-order">Подтвердить заказ</button>
+        </form>
+    </div>
+
+    <div class="shopping-order">
+
+        @foreach (var item in Model.Items)
+        {
+            <div class="item-order">
+                <div class="image-order">
+                    <a href="/Home/Details?id=@item.Product.Id">
+                        <img src="/images/@item.Product.Image" class="img-fluid" />
+                    </a>
+                </div>
+
+                <div class="description-order">
+                    <div>@item.Product.Brend @item.Product.Model</div>
+                    <div>Количество: @item.Count</div>
+                    <div>
+                        @item.Product.Price.ToString("N0")
+                        <label class="product-textprice-id_rub">₽/шт</label>
+                    </div>
+                </div>
+
+                <div class="total-price-order">
+                    <label>
+                        @item.Sum.ToString("N0")
+                        <label class="product-textprice-id_rub">₽</label>
+                    </label>
+                </div>
+            </div>
+        }
+
+        <div class="product-textprice-id-order">
+            <label>Итого: @Model.Sum.ToString("N0")</label>
+            <label class="product-textprice-id_rub">₽</label>
+        </div>
+    </div>
+</div>

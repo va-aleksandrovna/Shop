@@ -1,0 +1,62 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+@* 
+<h3>@Model</h3>
+ *@
+<h1 class="product-card-top_title">Спасибо за заказ!</h1>
+<div class="text-order">Спасибо что выбрали наш магазин! Мы постараемся максимально быстро собрать ваш заказ!</div>
+
+<div class="cart-tab-content">
+    <div class="order-tab-total-amount">
+        <div class="order-form">
+            <label class="order-label">Имя: </label>
+            <label>@Model.Name</label>
+        </div>
+        <div class="order-form">
+            <label class="order-label">Почта: </label>
+            <label>@Model.Email</label>
+        </div>
+        <div class="order-form">
+            <label class="order-label">Телефон: </label>
+            <label>@Model.Phone</label>
+        </div>
+    </div>
+
+    <div class="shopping-order">
+        @foreach (var item in Model.Items)
+        {
+            <div class="item-order">
+                <div class="image-order">
+                    <a href="/Home/Details?id=@item.Product.Id">
+                        <img src="/images/@item.Product.Image" class="img-fluid" />
+                    </a>
+                </div>
+
+                <div class="description-order">
+                    <div>@item.Product.Brend @item.Product.Model</div>
+                    <div>Количество: @item.Count</div>
+                    <div>
+                        @item.Product.Price.ToString("N0")
+                        <label class="product-textprice-id_rub">₽/шт</label>
+                    </div>
+                </div>
+
+                <div class="total-price-order">
+                    <label>
+                        @item.Sum.ToString("N0")
+                        <label class="product-textprice-id_rub">₽</label>
+                    </label>
+                </div>
+            </div>
+        }
+
+        <div class="product-textprice-id-order">
+            <label>Итого: @Model.Sum.ToString("N0")</label>
+            <label class="product-textprice-id_rub">₽</label>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,97 @@
+﻿@model Cart
+
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+@if (Model == null || Model.Sum == 0)
+{
+    <h1 class="product-card-top_title">Корзина</h1>
+    <div class="cart-null">
+        <div class="empty-message__title-empty-cart">Пока пусто</div>
+        <div class ="empty-message__text">
+            Воспользуйтесь
+            <a href="/Home" class="a_home">
+                каталогом
+            </a>
+            или поиском
+        </div>
+    </div>
+}
+else
+{
+    <div class="cart-title">
+        <h1 class="cart-title-text">Корзина</h1>
+        <form asp-controller="Cart" asp-action="DeleteAll" onsubmit="deleteAllToCart(event); return true;">
+            <input type="submit" class="cart-title-btn" value="Очистить корзину">
+        </form>
+        <iframe id="hidden_iframe" name="hidden_iframe" style="display:none;"></iframe>
+    </div>
+
+    @if (Model != null)
+    {
+        <div class="cart-tab-content">
+            <div class="shopping-cart">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="item">
+
+                        <form asp-controller="Cart" asp-action="Delete" onsubmit="deleteToCart(event, '@item.Product.Id'); return true;">
+                            <input hidden name="id" value="@item.Product.Id"/>
+                            <button type="submit" class="cart-btn"><img class="img" src="/images/delete-icn.svg"></button>
+                        </form>
+                        <iframe id="hidden_iframe" name="hidden_iframe" style="display:none;"></iframe>
+
+                        <div class="image">
+                            <a href="/Home/Details?id=@item.Product.Id">
+                                <img src="/images/@item.Product.Image" class="img-fluid" />
+                            </a>
+                        </div>
+
+                        <div class="description">
+                            <div>@item.Product.Brend @item.Product.Model</div>
+                            @* <div>@item.Product.Model</div> *@
+                        </div>
+
+                        <form asp-controller="Cart" asp-action="Update" class="formpm" method="post">
+                            <a class="cart-btn2" href="/Cart/UpdateMinus?id=@item.Product.Id"><img class="minus-btn-img" src="/images/minus.svg"></a>
+
+                            <input class="quantity-input" name="id" hidden value="@item.Product.Id">
+                            <input class="quantity-input" type="text" name="count" value="@item.Count">
+                            <input class="quantity-input" type="submit" hidden>
+
+                            <a class="cart-btn2" href="/Cart/UpdatePlus?id=@item.Product.Id"><img class="plus-btn-img" src="/images/plus.svg"></a>
+                        </form>
+
+                        <div class="total-price-cart">
+                            <label>
+                                @item.Product.Price.ToString("N0")
+                                <label class="product-textprice-id_rub">₽/шт</label>
+                            </label>
+                        </div>
+
+                        <div class="total-price">
+                            <label>
+                                @item.Sum.ToString("N0")
+                                <label class="product-textprice-id_rub">₽</label>
+                            </label>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="cart-tab-total-amount">
+                <div class="total-amount__title">
+                    Условия заказа
+                </div>
+                <div class="total-price2">
+                    <label>
+                        @Model.Sum.ToString("N0")
+                        <label class="product-textprice-id_rub">₽</label>
+                    </label>
+                </div>
+                <a href="/Cart/Checkout" class="btn">Перейти к оформлению</a>
+            </div>
+        </div>
+    }
+}

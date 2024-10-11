@@ -1,0 +1,123 @@
+﻿@{
+    ViewData["Title"] = "Панель админа";
+}
+
+<div class="row">
+    <div class="col-md-3 my-4">
+        <div class="list-group ">
+            <a asp-action="GetProducts" class="list-group-item list-group-item-action">Товары</a>
+            <a asp-action="GetUsers" class="list-group-item list-group-item-action">Пользователи</a>
+        </div>
+    </div>
+
+    <div class="col-md-9 my-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Добавление товара</h4>
+                        <div class="col-8">
+                            <div>Категория:</div>
+                            <form asp-controller="Admin" asp-action="AddProductCategory" method="post">
+                                <input name="type" type="radio" id="photo" value="photo" onclick="this.form.submit()" />
+                                <label for="photo">Фотоаппарат</label>
+                                <input name="type" type="radio" id="obectiv" value="obectiv" onclick="this.form.submit()" />
+                                <label for="obectiv">Объектив</label>
+                                <input name="type" type="radio" id="action" value="action" onclick="this.form.submit()" checked />
+                                <label for="action">Экшн-камера</label>
+                            </form>
+                        </div>
+                        <hr />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-controller="Admin" asp-action="AddProductAction" asp-route-Category="Экшн-камера" method="post">
+                            <div class="text-danger offset-4 col-8"></div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Производитель</label>
+                                <select class="sel2_filter" name="Brend" required>
+                                    <!option value="Rokinon">Rokinon</!option>
+                                    <!option value="Sony">Sony</!option>
+                                    <!option value="Meike">Meike</!option>
+                                    <!option value="Viltrox">Viltrox</!option>
+                                    <!option value="SJCAM">SJCAM</!option>
+                                    <!option value="GoPro">GoPro</!option>
+                                    <!option value="Digma">Digma</!option>
+                                    <!option value="Canon">Canon</!option>
+                                    <!option value="Nikon">Nikon</!option>
+                                </select>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Модель</label>
+                                <div class="col-8">
+                                    <input placeholder="Модель" name="Model" class="form-control here" type="text" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Цена, руб</label>
+                                <div class="col-8">
+                                    <input placeholder="Цена" name="Price" class="form-control here" type="number" min="1" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Описание</label>
+                                <div class="col-8">
+                                    <input placeholder="Описание" name="Description" class="form-control here" type="text" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Изображение</label>
+                                <div class="col-8">
+                                    <input placeholder="Изображение" name="Image" class="form-control here" type="text" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" style="margin-top: 15px;">
+                                <label class="col-4 col-form-label">Кол-во кадров</label>
+                                <select class="sel2_filter" name="MaxNumberOfFrames">
+                                    <!option value="">не указано</!option>
+                                    <!option value="30" @(ViewBag.Frame == 30 ? "selected" : "")>30</!option>
+                                    <!option value="60" @(ViewBag.Frame == 60 ? "selected" : "")>60</!option>
+                                </select>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Диагональ дисплея</label>
+                                <input class="sel2_filter" type="number" min="0" max="10" name="DiagonalDisplay">
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Общее число Мп матрицы</label>
+                                <input class="sel2_filter" name="NumberOfMegapixels" type="text" id="sno"
+                                       onkeypress="return (event.charCode >= 48 && event.charCode <= 57) ||
+event.charCode == 44 || event.charCode == 0 ">
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-4 col-form-label">Водонепроницаемость</label>
+                                <select class="sel2_filter" name="WaterResistance">
+                                    <!option value="">не указано</!option>
+                                    <!option value="есть" @(ViewBag.Water == "есть" ? "selected" : "")>есть</!option>
+                                    <!option value="нет" @(ViewBag.Water == "нет" ? "selected" : "")>нет</!option>
+                                </select>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="offset-4 col-8 text-right">
+                                    <button class="btn btn-info">Сохранить</button>
+                                </div>
+                            </div>
+                        </form>
+                        <a class="text-info" asp-action="GetProducts"><i class="bi bi-arrow-left mr-2 text-info"></i>Назад</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
